@@ -14,7 +14,14 @@ class CdkPythonStack(core.Stack):
         # import default vpc
         # vpc = ec2.Vpc.from_lookup(self, id='Vpc', is_default=True)
         # from vpcId
-        vpc = ec2.Vpc.from_lookup(self, id='Vpc', vpc_id='vpc-0417e46d')
+        # vpc = ec2.Vpc.from_lookup(self, id='Vpc', vpc_id='vpc-0417e46d')
+        # create vpc
+        vpc = ec2.Vpc(self,
+                      'eks-vpc',
+                      cidr='10.3.0.0/16',
+                      max_azs=3,
+                      nat_gateways=1
+                      )
 
         # create eks admin role
         eks_master_role = iam.Role(self, 'EksMasterRole',

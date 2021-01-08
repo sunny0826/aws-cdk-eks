@@ -1,5 +1,17 @@
 
-# Welcome to your CDK Python project!
+# AWS CDK EKS sample
+
+## Features included
+
+- create aws eks
+- create iam role for eks master
+- create aws vpc for eks
+- create node group for eks
+- create auto scaling group for eks
+- add `Name` for auto sacling group instance
+- add `Tags` for auto sacling group instance
+
+## Quick Start
 
 This is a blank project for Python development with CDK.
 
