@@ -2,6 +2,7 @@ from aws_cdk import (
     core,
     aws_ec2 as ec2,
     aws_eks as eks,
+    aws_iam as iam,
 )
 
 
@@ -15,9 +16,16 @@ class CdkPythonStack(core.Stack):
         # from vpcId
         vpc = ec2.Vpc.from_lookup(self, id='Vpc', vpc_id='vpc-0417e46d')
 
+        # create eks admin role
+        eks_master_role = iam.Role(self, 'EksMasterRole',
+                                   role_name='EksAdminRole',
+                                   assumed_by=iam.AccountRootPrincipal()
+                                   )
+
         cluster = eks.Cluster(self, 'Cluster',
                               vpc=vpc,
                               version=eks.KubernetesVersion.V1_18,
+                              masters_role=eks_master_role,
                               default_capacity=0
                               )
 
@@ -36,3 +44,5 @@ class CdkPythonStack(core.Stack):
         core.Tags.of(asgng).add('Name', 'self-managed-ng',
                                 apply_to_launched_instances=True
                                 )
+
+        core.CfnOutput(self, 'EksMasterRoleArn', value=eks_master_role.role_arn)
