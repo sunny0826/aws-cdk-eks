@@ -28,7 +28,13 @@ class CdkPythonStack(core.Stack):
                               masters_role=eks_master_role,
                               default_capacity=0
                               )
+        # Conditionally dd aws console login user to the RBAC so we can browse the EKS workloads
+        console_user_string = self.node.try_get_context('console_user')
+        if 'console_user_string' in vars():
+            console_user = iam.User.from_user_name(self, 'ConsoleUser', user_name=console_user_string)
+            cluster.aws_auth.add_user_mapping(console_user, groups=['system:masters'])
 
+        # create eks managed nodegroup
         cluster.add_nodegroup_capacity('MNG',
                                        capacity_type=eks.CapacityType.SPOT,
                                        desired_size=2,
@@ -42,6 +48,9 @@ class CdkPythonStack(core.Stack):
                                                         desired_capacity=2)
 
         core.Tags.of(asgng).add('Name', 'self-managed-ng',
+                                apply_to_launched_instances=True
+                                )
+        core.Tags.of(asgng).add('foo', 'bar',
                                 apply_to_launched_instances=True
                                 )
 
