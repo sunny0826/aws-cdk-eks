@@ -50,8 +50,5 @@ class CdkPythonStack(core.Stack):
         core.Tags.of(asgng).add('Name', 'self-managed-ng',
                                 apply_to_launched_instances=True
                                 )
-        core.Tags.of(asgng).add('foo', 'bar',
-                                apply_to_launched_instances=True
-                                )
 
         core.CfnOutput(self, 'EksMasterRoleArn', value=eks_master_role.role_arn)
