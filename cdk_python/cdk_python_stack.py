@@ -23,9 +23,16 @@ class CdkPythonStack(core.Stack):
 
         cluster.add_nodegroup_capacity('MNG',
                                        capacity_type=eks.CapacityType.SPOT,
-                                       desired_size=4,
+                                       desired_size=2,
                                        instance_types=[
                                            ec2.InstanceType('t3.large'),
                                            ec2.InstanceType('m5.large'),
                                            ec2.InstanceType('c5.large'),
-                                       ])
+                                       ]),
+        asgng = cluster.add_auto_scaling_group_capacity('ASGNG',
+                                                        instance_type=ec2.InstanceType('t3.large'),
+                                                        desired_capacity=2)
+
+        core.Tags.of(asgng).add('Name', 'self-managed-ng',
+                                apply_to_launched_instances=True
+                                )
