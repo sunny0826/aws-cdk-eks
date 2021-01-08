@@ -1,6 +1,8 @@
 
 # AWS CDK EKS sample
 
+Thanks to [@pahud](https://github.com/pahud) for his help.
+
 ## Features included
 
 - create aws eks
