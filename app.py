@@ -15,6 +15,6 @@ REGION = app.node.try_get_context('region') or os.environ.get(
 
 env = core.Environment(region=REGION, account=ACCOUNT)
 
-CdkPythonStack(app, "cdk-python2", env=env)
+CdkPythonStack(app, "cdk-python", env=env)
 
 app.synth()
